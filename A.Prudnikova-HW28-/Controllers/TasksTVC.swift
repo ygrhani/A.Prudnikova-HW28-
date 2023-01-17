@@ -44,7 +44,6 @@ class TasksTVC: UITableViewController {
     
     var notificationToken: NotificationToken?
     var currentTasksList: TasksList?
-    
     private var notCompletedTasks: Results<Task>!
     private var completedTasks: Results<Task>!
 
@@ -53,7 +52,7 @@ class TasksTVC: UITableViewController {
         
         filteringTasks()
         title = currentTasksList?.name
-//        addTasksObserver()
+//        addTasksObserver(sec: )
         let addBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addBarButtonSystemItemSelector))
         
         self.navigationItem.setRightBarButtonItems([addBtn, editButtonItem], animated: true)
@@ -119,7 +118,7 @@ class TasksTVC: UITableViewController {
         
         let elementToMove = fromIndexPath.section == 0 ? notCompletedTasks[fromIndexPath.row] : completedTasks[fromIndexPath.row]
         StorageManager.deleteToMove(currentTasksList!, task: elementToMove, indx: fromIndexPath.row)
-        StorageManager.moveTask(currentTasksList!, task: elementToMove, indx: to.row)
+        StorageManager.moveTask(currentTasksList!, task: elementToMove, indx: to.row, section: to.section)
     }
 
 
@@ -138,7 +137,7 @@ class TasksTVC: UITableViewController {
         tableView.reloadData()
     }
     
-//    private func addTasksObserver() {
+//    private func addTasksObserver(sec: Int) {
 //        // Realm notification
 //        notificationToken = currentTasksList?.tasks.observe { [weak self] change in
 //            guard let self = self else { return }
@@ -151,15 +150,15 @@ class TasksTVC: UITableViewController {
 //                print("modifications: \(modifications)")
 //                if !modifications.isEmpty {
 //
-//                    let indexPathArray = self.createIndexPathArray(intArr: modifications, section: <#Int#>)
+//                    let indexPathArray = self.createIndexPathArray(intArr: modifications, section: sec)
 //                    self.tableView.reloadRows(at: indexPathArray, with: .automatic)
 //                }
 //                if !deletions.isEmpty {
-//                    let indexPathArray = self.createIndexPathArray(intArr: deletions, section: 0)
+//                    let indexPathArray = self.createIndexPathArray(intArr: deletions, section: sec)
 //                    self.tableView.deleteRows(at: indexPathArray, with: .automatic)
 //                }
 //                if !insertions.isEmpty {
-//                    let indexPathArray = self.createIndexPathArray(intArr: insertions, section: 0)
+//                    let indexPathArray = self.createIndexPathArray(intArr: insertions, section: sec)
 //                    self.tableView.insertRows(at: indexPathArray, with: .automatic)
 //                }
 //            case .error(let error):
@@ -171,7 +170,7 @@ class TasksTVC: UITableViewController {
 //    private func createIndexPathArray(intArr: [Int], section: Int) -> [IndexPath] {
 //        var indexPathArray = [IndexPath]()
 //        for row in intArr {
-//            indexPathArray.append(IndexPath.init(row: row, section: section))
+//            indexPathArray.append(IndexPath.init(row: row, section:0))
 //        }
 //        return indexPathArray
 //    }

@@ -72,9 +72,10 @@ class StorageManager {
 
     // MARK: - Tasks Methods
     
-    static func moveTask (_ tasksList: TasksList, task: Task, indx: Int) {
+    static func moveTask (_ tasksList: TasksList, task: Task, indx: Int, section: Int) {
         try! realm.write {
             tasksList.tasks.insert(task, at: indx)
+            task.isComplete = section == 0 ? false : true
         }
     }
     
